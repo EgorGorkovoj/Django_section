@@ -1,0 +1,17 @@
+cfgv==3.5.0
+distlib==0.4.0
+filelock==3.20.0
+identify==2.6.15
+nodeenv==1.9.1
+platformdirs==4.5.0
+pre_commit==4.5.0
+PyYAML==6.0.3
+ruff==0.14.6
+virtualenv==20.35.4
+Django==5.2.7
+django-filter==25.2
+djangorestframework==3.16.1
+python-dotenv==1.1.1
+asgiref==3.11.0
+sqlparse==0.5.3
+tzdata==2025.2
