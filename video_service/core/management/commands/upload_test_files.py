@@ -69,4 +69,4 @@ class Command(BaseCommand):
 
         VideoFile.objects.bulk_create(video_files_to_create, batch_size=2000)
 
-        self.stdout.write(self.style.SUCCESS('Готово — 100000 видео и mp4 файлов созданы.'))
+        self.stdout.write(self.style.SUCCESS('Готово — 100000 mp4 файлов создано.'))
