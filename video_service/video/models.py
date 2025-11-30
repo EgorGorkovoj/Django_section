@@ -1,10 +1,12 @@
 from core.constants import DefaultFieldConstants, LengthFieldConstants
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.db import models
+
+User = get_user_model()
 
 
 def get_upload_path(instance, filename):
-    return 'user_{0}/{1}'.format(instance.user.id, filename)
+    return 'user_{0}/{1}'.format(instance.video.owner.id, filename)
 
 
 class Video(models.Model):
@@ -45,11 +47,16 @@ class VideoFile(models.Model):
     )
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['video', 'quality'], name='unique_video_quality_videofile'
+            )
+        ]
         verbose_name = 'Видеофайл'
         verbose_name_plural = 'Видеофайлы'
 
     def __str__(self):
-        return self.file
+        return self.file.name.split('/')[-1]
 
 
 class Like(models.Model):

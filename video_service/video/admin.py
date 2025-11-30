@@ -1,6 +1,14 @@
 from django.contrib import admin
+from django.utils.html import format_html
 
 from .models import Like, Video, VideoFile
+
+
+class VideoFileInline(admin.TabularInline):
+    model = VideoFile
+    extra = 0
+    fields = ('file', 'quality')
+    readonly_fields = ('file',)
 
 
 class ApiVideoAdmin(admin.ModelAdmin):
@@ -11,10 +19,27 @@ class ApiVideoAdmin(admin.ModelAdmin):
         'is_published',
         'total_likes',
         'created_at',
+        'video_files_list',
     )
     search_fields = ('owner__first_name', 'name')
-    list_filter = ('name',)
-    list_display_links = ('owner',)
+    list_filter = (
+        'name',
+        'owner',
+    )
+    list_display_links = ('name',)
+    inlines = [
+        VideoFileInline,
+    ]
+
+    @admin.display(description='Видео файлы')
+    def video_files_list(self, obj):
+        files = obj.video_files.all()
+        if not files:
+            return '-'
+        links = []
+        for f in files:
+            links.append(format_html('<a href="{}" target="_blank">{}</a>', f.file.url, f.quality))
+        return format_html('<br>'.join(links))
 
 
 class ApiVideoFileAdmin(admin.ModelAdmin):
